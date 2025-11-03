@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حصالة التوفير - 100,000 دج شهرياً</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .real-time-info {
+            background: #34495e;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .real-time-item {
+            margin: 5px 15px;
+        }
+        
+        .real-time-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #f39c12;
+        }
+        
+        .savings-display {
+            background: #2c3e50;
+            padding: 25px;
+            text-align: center;
+            color: white;
+        }
+        
+        .current-savings {
+            font-size: 3em;
+            font-weight: bold;
+            color: #f39c12;
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .month-info {
+            display: flex;
+            justify-content: space-around;
+            background: #34495e;
+            padding: 15px;
+            color: white;
+            font-size: 1.1em;
+            flex-wrap: wrap;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .daily-task {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 3px solid #3498db;
+        }
+        
+        .task-title {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .today-info {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .today-amount {
+            font-size: 3.5em;
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .day-motivation {
+            color: #27ae60;
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 1.2em;
+            padding: 10px;
+            background: #d4edda;
+            border-radius: 10px;
+            border-right: 4px solid #28a745;
+        }
+        
+        .complete-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(46, 204, 113, 0.4);
+        }
+        
+        .complete-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.6);
+        }
+        
+        .completion-message {
+            color: #27ae60;
+            font-weight: bold;
+            margin: 15px 0;
+            font-size: 1.2em;
+            display: none;
+        }
+        
+        .progress-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border-right: 5px solid #3498db;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .progress-bar {
+            background: #ecf0f1;
+            height: 35px;
+            border-radius: 18px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .month-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #3498db;
+        }
+        
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 10px 0;
+        }
+        
+        .week-plan {
+            background: #e8f6f3;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border-right: 5px solid #1abc9c;
+        }
+        
+        .plan-title {
+            color: #16a085;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.4em;
+        }
+        
+        .weekly-schedule {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .day-schedule {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+        
+        .day-schedule.current {
+            border: 3px solid #e74c3c;
+            transform: scale(1.05);
+            background: #fff3cd;
+        }
+        
+        .day-schedule.completed {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .day-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .day-amount {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 8px 0;
+        }
+        
+        .day-desc {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .history-section {
+            background: #fff3cd;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            border: 2px solid #ffeaa7;
+        }
+        
+        .history-title {
+            color: #856404;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.3em;
+        }
+        
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            background: white;
+            padding: 12px 18px;
+            margin: 10px 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .history-date {
+            color: #7f8c8d;
+            font-size: 0.95em;
+        }
+        
+        .history-amount {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 20px;
+        }
+        
+        .celebration {
+            display: none;
+            text-align: center;
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2em; }
+            .current-savings { font-size: 2.2em; }
+            .today-amount { font-size: 2.5em; }
+            .month-info { flex-direction: column; gap: 10px; }
+            .weekly-schedule { grid-template-columns: repeat(2, 1fr); }
+            .real-time-info { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏦 حصالة التوفير - 100,000 دج شهرياً</h1>
+            <p>نظام توفير ذكي مع وقت وتاريخ حقيقي</p>
+        </div>
+        
+        <div class="real-time-info">
+            <div class="real-time-item">
+                <div>التاريخ اليوم</div>
+                <div class="real-time-value" id="currentDate">--/--/----</div>
+            </div>
+            <div class="real-time-item">
+                <div>اليوم</div>
+                <div class="real-time-value" id="currentDayName">---</div>
+            </div>
+            <div class="real-time-item">
+                <div>الساعة</div>
+                <div class="real-time-value" id="currentTime">--:--:--</div>
+            </div>
+            <div class="real-time-item">
+                <div>الشهر الهجري</div>
+                <div class="real-time-value" id="hijriMonth">----</div>
+            </div>
+        </div>
+        
+        <div class="savings-display">
+            <div>إجمالي المدخرات</div>
+            <div class="current-savings" id="currentSavings">0 دج</div>
+        </div>
+        
+        <div class="month-info">
+            <div>الشهر الميلادي: <span id="currentMonth">يناير</span></div>
+            <div>اليوم في الشهر: <span id="currentDayNumber">1</span></div>
+            <div>المتبقي هذا الشهر: <span id="monthRemaining">100,000</span> دج</div>
+            <div>المدخر هذا الشهر: <span id="monthSaved">0</span> دج</div>
+        </div>
+        
+        <div class="content">
+            <div class="daily-task">
+                <div class="task-title">📅 مهمة اليوم</div>
+                <div class="today-info" id="todayInfo">اليوم 1 - الإثنين</div>
+                <div>المبلغ المطلوب اليوم:</div>
+                <div class="today-amount" id="todayAmount">2,500 دج</div>
+                <div class="day-motivation" id="dayMotivation">بداية خفيفة باش تدخل المود</div>
+                
+                <button class="complete-btn" id="completeBtn">
+                    💰 تم إضافة المبلغ
+                </button>
+                
+                <div class="completion-message" id="completionMessage">
+                    🎉 ممتاز! تم إضافة <span id="addedAmount">0</span> دج إلى مدخراتك
+                </div>
+            </div>
+            
+            <div class="progress-section">
+                <div class="progress-info">
+                    <span>تقدم الشهر الحالي</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress">0%</div>
+                </div>
+                
+                <div class="month-stats">
+                    <div class="stat-card">
+                        <div>المدخر اليوم</div>
+                        <div class="stat-value" id="todaySaved">0 دج</div>
+                        <div>من <span id="todayTarget">0</span> دج</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>إجمالي الشهر</div>
+                        <div class="stat-value" id="monthTotal">0 دج</div>
+                        <div>من 100,000 دج</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>الأيام المتبقية</div>
+                        <div class="stat-value" id="daysRemaining">30</div>
+                        <div>في الشهر</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="celebration" id="celebration">
+                🎉🎊🥳
+            </div>
+            
+            <div class="week-plan">
+                <div class="plan-title">📊 الخطة الأسبوعية الثابتة</div>
+                <div class="weekly-schedule" id="weeklySchedule">
+                    <!-- سيتم ملؤه بالجافاسكريبت -->
+                </div>
+            </div>
+            
+            <div class="history-section">
+                <div class="history-title">📝 سجل التوفير</div>
+                <div class="history-list" id="historyList">
+                    <div class="history-item">
+                        <span class="history-date">لم تتم أي عملية بعد</span>
+                        <span class="history-amount">0 دج</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>💰 نظام توفير ذكي مع وقت حقيقي - 100,000 دج شهرياً</p>
+        </div>
+    </div>
+
+    <script>
+        // بيانات التطبيق
+        let totalSavings = 0;
+        let currentMonthSavings = 0;
+        let history = [];
+        const monthlyTarget = 100000;
+        
+        // الخطة الأسبوعية الثابتة
+        const weeklyPlan = [
+            { day: "الإثنين", amount: 2500, motivation: "بداية خفيفة باش تدخل المود" },
+            { day: "الثلاثاء", amount: 3000, motivation: "زيد شوية التحدي" },
+            { day: "الأربعاء", amount: 3500, motivation: "حافظ على الوتيرة" },
+            { day: "الخميس", amount: 4000, motivation: "يوم الطاقة العالية 💪" },
+            { day: "الجمعة", amount: 2000, motivation: "راحة بسيطة، خليه خفيف" },
+            { day: "السبت", amount: 4500, motivation: "عوّض فيه الأيام الخفيفة" },
+            { day: "الأحد", amount: 3500, motivation: "توازن قبل أسبوع جديد" }
+        ];
+
+        // أسماء الأشهر العربية
+        const arabicMonths = [
+            "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+            "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+        ];
+
+        // أسماء الأشهر الهجرية
+        const hijriMonths = [
+            "محرم", "صفر", "ربيع الأول", "ربيع الآخر", "جمادى الأولى", "جمادى الآخرة",
+            "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"
+        ];
+
+        // أسماء الأيام العربية
+        const arabicDays = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+
+        // تحديث الوقت والتاريخ الحقيقي
+        function updateRealTime() {
+            const now = new Date();
+            
+            // التاريخ الميلادي
+            const day = now.getDate();
+            const month = now.getMonth();
+            const year = now.getFullYear();
+            const dayOfWeek = now.getDay();
+            
+            // الوقت
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            // تحديث العناصر
+            document.getElementById('currentDate').textContent = `${day}/${month + 1}/${year}`;
+            document.getElementById('currentDayName').textContent = arabicDays[dayOfWeek];
+            document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('currentMonth').textContent = arabicMonths[month];
+            document.getElementById('currentDayNumber').textContent = day;
+            
+            // حساب الشهر الهجري (تقريبي)
+            const hijriMonth = calculateHijriMonth(month);
+            document.getElementById('hijriMonth').textContent = hijriMonth;
+        }
+
+        // حساب الشهر الهجري (تقريبي)
+        function calculateHijriMonth(gregorianMonth) {
+            // هذا حساب تقريبي للشهر الهجري
+            const hijriMonthIndex = (gregorianMonth + 9) % 12;
+            return hijriMonths[hijriMonthIndex];
+        }
+
+        // الحصول على خطة اليوم الحالي بناء على اليوم الفعلي
+        function getTodayPlan() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 = الأحد, 1 = الإثنين, ...
+            
+            // تحويل إلى نظامنا (الإثنين = 0)
+            let planIndex = (dayOfWeek + 6) % 7;
+            return weeklyPlan[planIndex];
+        }
+
+        // حساب الأيام المتبقية في الشهر
+        function getDaysRemainingInMonth() {
+            const today = new Date();
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            return lastDay.getDate() - today.getDate();
+        }
+
+        // حساب المبلغ المتبقي للشهر
+        function getRemainingAmount() {
+            return monthlyTarget - currentMonthSavings;
+        }
+
+        // تحديث الواجهة
+        function updateUI() {
+            const todayPlan = getTodayPlan();
+            const daysRemaining = getDaysRemainingInMonth();
+            const requiredAverage = daysRemaining > 0 ? Math.ceil(getRemainingAmount() / daysRemaining) : 0;
+            
+            // تحديث العرض الرئيسي
+            document.getElementById('currentSavings').textContent = totalSavings.toLocaleString() + ' دج';
+            document.getElementById('monthRemaining').textContent = getRemainingAmount().toLocaleString();
+            document.getElementById('monthSaved').textContent = currentMonthSavings.toLocaleString();
+            
+            // تحديث معلومات اليوم
+            document.getElementById('todayInfo').textContent = `اليوم ${new Date().getDate()} - ${todayPlan.day}`;
+            document.getElementById('todayAmount').textContent = todayPlan.amount.toLocaleString() + ' دج';
+            document.getElementById('todaySaved').textContent = todayPlan.amount.toLocaleString() + ' دج';
+            document.getElementById('todayTarget').textContent = requiredAverage.toLocaleString();
+            document.getElementById('dayMotivation').textContent = todayPlan.motivation;
+            document.getElementById('daysRemaining').textContent = daysRemaining;
+            
+            // تحديث شريط التقدم الشهري
+            const monthProgress = (currentMonthSavings / monthlyTarget) * 100;
+            document.getElementById('progress').style.width = Math.min(monthProgress, 100) + '%';
+            document.getElementById('progress').textContent = Math.round(monthProgress) + '%';
+            document.getElementById('progressText').textContent = Math.round(monthProgress) + '%';
+            
+            // تحديث الإحصائيات
+            document.getElementById('monthTotal').textContent = currentMonthSavings.toLocaleString();
+            
+            // تحديث الجدول الأسبوعي
+            updateWeeklySchedule();
+        }
+
+        // تحديث الجدول الأسبوعي
+        function updateWeeklySchedule() {
+            const weeklySchedule = document.getElementById('weeklySchedule');
+            weeklySchedule.innerHTML = '';
+            
+            const today = new Date();
+            const currentDayOfWeek = (today.getDay() + 6) % 7; // تحويل إلى نظامنا
+            
+            weeklyPlan.forEach((dayPlan, index) => {
+                const isCurrentDay = index === currentDayOfWeek;
+                const isCompleted = index < currentDayOfWeek;
+                
+                const daySchedule = document.createElement('div');
+                daySchedule.className = `day-schedule ${isCurrentDay ? 'current' : ''} ${isCompleted ? 'completed' : ''}`;
+                
+                daySchedule.innerHTML = `
+                    <div class="day-name">${dayPlan.day}</div>
+                    <div class="day-amount">${dayPlan.amount.toLocaleString()} دج</div>
+                    <div class="day-desc">${dayPlan.motivation}</div>
+                    ${isCompleted ? '<div style="color: #27ae60; font-size: 0.8em; margin-top: 5px;">✓ مكتمل</div>' : ''}
+                    ${isCurrentDay ? '<div style="color: #e74c3c; font-size: 0.8em; margin-top: 5px;">📍 اليوم</div>' : ''}
+                `;
+                
+                weeklySchedule.appendChild(daySchedule);
+            });
+        }
+
+        // إضافة مدخرات اليوم
+        function addDailySavings() {
+            const todayPlan = getTodayPlan();
+            const today = new Date();
+            
+            // إضافة للمدخرات
+            totalSavings += todayPlan.amount;
+            currentMonthSavings += todayPlan.amount;
+            
+            // إضافة إلى السجل
+            const dateString = today.toLocaleDateString('ar-EG');
+            const timeString = today.toLocaleTimeString('ar-EG');
+            
+            history.unshift({
+                date: dateString,
+                time: timeString,
+                amount: todayPlan.amount,
+                day: todayPlan.day,
+                motivation: todayPlan.motivation,
+                timestamp: today.getTime()
+            });
+            
+            // تحديث السجل والواجهة
+            updateHistory();
+            updateUI();
+            
+            // عرض رسالة التأكيد
+            showCompletionMessage(todayPlan.amount);
+            
+            // التحقق من بداية شهر جديد
+            checkNewMonth();
+        }
+
+        // التحقق من بداية شهر جديد
+        function checkNewMonth() {
+            const savedData = localStorage.getItem('realTimeSavingsData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                const lastSaveDate = new Date(data.lastSaveTimestamp);
+                const currentDate = new Date();
+                
+                // إذا انتقلنا لشهر جديد، نعيد المدخرات الشهرية
+                if (lastSaveDate.getMonth() !== currentDate.getMonth() || 
+                    lastSaveDate.getFullYear() !== currentDate.getFullYear()) {
+                    currentMonthSavings = 0;
+                    showMonthCompletionMessage();
+                }
+            }
+        }
+
+        // عرض رسالة إنجاز اليوم
+        function showCompletionMessage(amount) {
+            const message = document.getElementById('completionMessage');
+            const addedAmount = document.getElementById('addedAmount');
+            addedAmount.textContent = amount.toLocaleString();
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
+
+        // عرض رسالة انتهاء الشهر
+        function showMonthCompletionMessage() {
+            const celebration = document.getElementById('celebration');
+            celebration.style.display = 'block';
+            setTimeout(() => {
+                celebration.style.display = 'none';
+            }, 5000);
+            
+            // إشعار للمستخدم
+            alert(`🎉 مبروك! بداية شهر جديد! ابدأ رحلة توفير جديدة لتحقيق 100,000 دج هذا الشهر!`);
+        }
+
+        // تحديث سجل التاريخ
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            
+            if (history.length === 0) {
+                historyList.innerHTML = `
+                    <div class="history-item">
+                        <span class="history-date">لم تتم أي عملية بعد</span>
+                        <span class="history-amount">0 دج</span>
+                    </div>
+                `;
+                return;
+            }
+            
+            // عرض آخر 15 عملية
+            const recentHistory = history.slice(0, 15);
+            recentHistory.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <span class="history-date">
+                        ${item.day} - ${item.date}<br>
+                        <small>${item.time} - ${item.motivation}</small>
+                    </span>
+                    <span class="history-amount">+${item.amount.toLocaleString()} دج</span>
+                `;
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحميل البيانات المحفوظة
+            const savedData = localStorage.getItem('realTimeSavingsData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                totalSavings = data.totalSavings || 0;
+                currentMonthSavings = data.currentMonthSavings || 0;
+                history = data.history || [];
+                
+                // التحقق من بداية شهر جديد
+                checkNewMonth();
+            }
+            
+            // تحديث الوقت كل ثانية
+            updateRealTime();
+            setInterval(updateRealTime, 1000);
+            
+            updateUI();
+            updateHistory();
+            
+            // إضافة event listener للزر
+            document.getElementById('completeBtn').addEventListener('click', function() {
+                addDailySavings();
+                
+                // حفظ البيانات في localStorage
+                const dataToSave = {
+                    totalSavings: totalSavings,
+                    currentMonthSavings: currentMonthSavings,
+                    history: history,
+                    lastSaveTimestamp: new Date().getTime()
+                };
+                localStorage.setItem('realTimeSavingsData', JSON.stringify(dataToSave));
+            });
+        });
+    </script>
+</body>
+</html>
